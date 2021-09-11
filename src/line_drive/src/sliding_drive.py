@@ -18,7 +18,6 @@ warp_img_h = Height / 2 #240
 
 warpx_margin = 20
 warpy_margin = 3
-mid_margin = 90
 
 # 슬라이딩 윈도우 개수
 nwindows = 9
@@ -92,12 +91,10 @@ def warp_process_image(img):
     _, L, _ = cv2.split(cv2.cvtColor(blur, cv2.COLOR_BGR2HLS))
     #lane_bin_th = L.mean() * 1.25 + 20
 
-    print(warp_img_w/2)
-    print(len(L[:][0])
-    lane_bin_th_l = L[:][:warp_img_w/2 - mid_margin].mean() + 30
-    lane_bin_th_r = L[:][warp_img_w/2 + mid_margin:].mean() + 30
+    lane_bin_th_l = L[:][warp_img_w/2:].mean()
+    lane_bin_th_r = L[:][warp_img_w/2:].mean() * 0.95 + 35
     
-    print(lane_bin_th_l, lane_bin_th_r)
+    #print(lane_bin_th_l, lane_bin_th_r)
 
     #_, lane = cv2.threshold(L, lane_bin_th, 255, cv2.THRESH_BINARY)
     _, lane_l = cv2.threshold(L, lane_bin_th_l, 255, cv2.THRESH_BINARY)
@@ -117,12 +114,12 @@ def warp_process_image(img):
     # (1) x축: 픽셀의 x 좌표값
     # (2) y축: 특정 x 좌표값을 갖는 모든 흰색 픽셀의 개수
     histogram = np.sum(lane[lane.shape[0]//2:,:], axis=0)
-    # x축(x좌표)을 반으로 나누어 왼쪽 차선과 오른쪽 차선을 구분하기      
+    # x축(x좌표)을 반으로 나누어 왼쪽 차선과 오른쪽 차선을 구분하기
     midpoint = np.int(histogram.shape[0]/2)
     # 왼쪽 절반 구역에서 흰색 픽셀의 개수가 가장 많은 위치를 슬라이딩 윈도우의 왼쪽 시작 위치로 잡기
-    leftx_current = np.argmax(histogram[:midpoint-mid_margin])
+    leftx_current = np.argmax(histogram[:midpoint-90])
     # 오른쪽 절반 구역에서 흰색 픽셀의 개수가 가장 많은 위치를 슬라이딩 윈도우의 오른쪽 시작 위치로 잡기
-    rightx_current = warp_img_w - np.argmax(histogram[histogram.shape[0]:midpoint+mid_margin:-1])
+    rightx_current = warp_img_w - np.argmax(histogram[histogram.shape[0]:midpoint+87:-1])
 
     window_height = np.int(lane.shape[0]/nwindows)
     nz = lane.nonzero()
@@ -275,7 +272,7 @@ def start():
         
         #print(lpos, rpos, steer_angle)
 
-        #cv2.imshow(window_title, steer_img)
+        cv2.imshow(window_title, steer_img)
 
         cv2.waitKey(1)
 
