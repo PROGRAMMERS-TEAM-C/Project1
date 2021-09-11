@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-
-import rospy, math, copy
+# -*- coding: utf-8 -*-
+import rospy, math, copy #임포트
 from std_msgs.msg import Int32MultiArray
 
 def callback(msg):
@@ -11,12 +11,14 @@ def callback(msg):
     fr = msg.data[2]
     r = msg.data[6]
     l = msg.data[7]
-    if fl < 240 and fr > 120:
-        xycar_msg.data = [50, 100]
-    elif fl > 120:
-        xycar_msg.data = [-50, 100]
+    if fl < 240 and fr > 110:
+        xycar_msg.data = [50, 50]
+    elif fl < 60 and fr < 110:
+        xycar_msg.data = [50, 50]
+    elif fl > 110:
+        xycar_msg.data = [-50, 50]
     else:
-        xycar_msg.data = [angle, 100]
+        xycar_msg.data = [angle, 50]
     motor_pub.publish(xycar_msg)
 rospy.init_node('guide')
 motor_pub = rospy.Publisher('xycar_motor_msg', Int32MultiArray, queue_size=1)
