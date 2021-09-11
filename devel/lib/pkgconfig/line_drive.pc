@@ -1,0 +1,8 @@
+prefix=/home/selfdriving/K-DIgital-Programmers-Autonomous-Driving-teamC/devel
+
+Name: line_drive
+Description: Description of line_drive
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
