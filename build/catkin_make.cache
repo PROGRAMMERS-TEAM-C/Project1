@@ -1,0 +1,2 @@
+ar_viewer:line_drive:xycar_sim_drive:xycar_sim_parking
+-DCATKIN_DEVEL_PREFIX=/home/selfdriving/K-DIgital-Programmers-Autonomous-Driving-teamC/devel -DCMAKE_INSTALL_PREFIX=/home/selfdriving/K-DIgital-Programmers-Autonomous-Driving-teamC/install -G Unix Makefiles
