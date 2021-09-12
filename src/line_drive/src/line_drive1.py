@@ -3,6 +3,7 @@
 
 import numpy as np
 import cv2, random, math, copy
+from matplotlib import pyplot as plt
 
 Width = 640
 Height = 480
@@ -247,7 +248,7 @@ def start():
         #cv2.imshow('frame', frame)
         #cv2.imshow('image', image)
         #cv2.imshow('warp_img', warp_img)
-        cv2.imshow(window_title, steer_img)
+        #cv2.imshow(window_title, steer_img)
 
         cv2.waitKey(1)
 
