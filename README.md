@@ -158,9 +158,9 @@ $ roslaunch ar_viewer ar_parking_approach3.launch
 - ar 태그 까지의 거리 정보, 각도, yaw값 확인
   - ar_pose_marker 토픽을 이용해 차량과 ar태그 까지의 거리, 각도, yaw값 계산.
 - 주차공간안에 똑바로 주차하기
-  - 똑바로 주차하기 위해 차량의 yaw값을 이용하여 후진하고 다시 주차하는 주행 구현.
+  - ar_pose_marker 토픽의 자세정보(쿼터니언값)을 오일러 값으로 변환해 yaw값 계산. 똑바로 주차하기 위해 차량의 yaw값을 이용하여 후진하고 다시 주차하는 주행 구현.
 - arctan를 이용하여 조향값 계산
-  - approach1, approach2, tryout의 경우 하드 코딩의 느낌이 많이 들어, DX, DY값을 이용하여 arctan로 각도를 구해서 조향값을 결정.
+  - approach1, approach2, tryout의 경우 하드 코딩의 느낌이 많이 들어, DX, DY값(ar태그 까지의 거리정보)을 이용하여 arctan로 각도를 구해서 조향값을 결정.
 
 ## Limitations
 ---
