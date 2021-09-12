@@ -2,6 +2,7 @@
 ## Video
 ---
 1. 맵 주행
+2. 
 [![맵 주행](http://img.youtube.com/vi/htMzWDzp00Y/0.jpg)](https://youtu.be/htMzWDzp00Y) 
 
 2. 차선 인식
@@ -103,7 +104,8 @@ $ roslaunch ar_parking_try1.launch
 
 ## Limitations
 ---
-### 1. 맵 주행
+### 1. 맵 주행[![맵 주행](http://img.youtube.com/vi/htMzWDzp00Y/0.jpg)](https://youtu.be/htMzWDzp00Y) 
+3. 차선 인식
 ### 2. 차선 인식
 ### 3. 주차 미션
 
