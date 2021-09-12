@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+### approach1 ###
 import rospy, math
 from std_msgs.msg import Int32MultiArray
 

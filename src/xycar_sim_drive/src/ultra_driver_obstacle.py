@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#### 장애물 피하는 버전, 초음파 데이터 거리값 사용 ####
 import rospy, math, copy #임포트
 from std_msgs.msg import Int32MultiArray
 

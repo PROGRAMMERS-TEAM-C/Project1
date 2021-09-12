@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-##### yaw값과 artag까지의 거리 이용3
-
+#### DX값과 DY값을 arctan계산하여 angle값 구한 버전
 import rospy, math, time
 import cv2, time, rospy
 import numpy as np
@@ -12,7 +11,7 @@ from tf.transformations import euler_from_quaternion
 
 from std_msgs.msg import Int32MultiArray
 
-arData = {"DX":0.0, "DY":0.0, "DZ":0.0, "AX":0.0, "AY":0.0, "AZ":0.0, "AW":0.0}
+arData = {"DX":0.0, "DY":1.0, "DZ":0.0, "AX":0.0, "AY":0.0, "AZ":0.0, "AW":0.0}
 
 roll, pitch, yaw = 0, 0, 0
 
@@ -28,6 +27,19 @@ def callback(msg):
         arData["AY"] = i.pose.pose.orientation.y
         arData["AZ"] = i.pose.pose.orientation.z
         arData["AW"] = i.pose.pose.orientation.w
+        
+def back_drive(angle, cnt): #자동차를 후진시키는 함수, 속도를 -10으로 세팅하여 모터제어 토픽을 발행한다.
+    global xycar_msg, motor_pub
+    for cnt in range(cnt): #cnt회수만큼 토픽을 발행한다.
+        xycar_msg.data = [angle, -10]
+        motor_pub.publish(xycar_msg)
+        time.sleep(0.1)
+        print(angle)
+    for cnt in range(cnt): #cnt회수의 1/3만큼 토픽을 발행한다. 회전 방향은 반대로 한다.
+        xycar_msg.data = [-angle, -10]
+        motor_pub.publish(xycar_msg)
+        time.sleep(0.1)
+        print(angle)
 
 rospy.init_node('ar_drive')
 
@@ -73,50 +85,32 @@ while not rospy.is_shutdown():
     cv2.imshow('AR Tag Position', img)
     cv2.waitKey(1)
 
-    angle = 10
-    speed = 30
-    #added
-    if round(yaw,1) > 0.0:
-        if arData["DX"] > 0.0:
-            if round(yaw,1) > 3:
-                angle = 9
-        elif arData["DX"] < 0.0:
-            angle = -40
-    elif round(yaw,1) < 0.0:
-        if round(yaw,1) < -15.0:
-		    angle = -10
-        else:
-		    if arData["DX"] < -300.0:
-		        angle = -37
-		    elif arData["DX"] < -250.0:
-		        angle = -32
-		    elif arData["DX"] < -200.0:
-		        angle = -25
-		    elif arData["DX"] < -150.0:
-		        angle = -20
-		    elif arData["DX"] < -100.0:
-		        angle = -17
-		    elif arData["DX"] < -50.0:
-		        angle = -15
-		    elif arData["DX"] > 0.0:
-		        angle = 35
+    angle = math.degrees(np.arctan(arData["DX"] / arData["DY"])) * 2.0
+    print(arData["DX"], arData["DY"])
+    
+    if(arData["DY"] > 150): #DY값이 150 이상이면 멀리 있는 것이므로 속도를 빠르게 -> 30
+        speed = 30
+    elif(arData["DY"] > 100): #DY값이 100~150 사이면 속도를 조금 낮추기 -> 20
+        speed = 20
+    elif(arData["DY"] > 70): #DY값이 70~100 사이면 속도를 더 낮추기 -> 10
+        speed = 10
+        if (round(yaw, 1) > 5.0 or round(yaw, 1) < -5.0):
+            t_end = time.time() + 2.0
+            while time.time() < t_end:
+                speed = -25
+                angle = round(yaw, 1) * -4.0
+                xycar_msg.data = [angle, speed]
+                motor_pub.publish(xycar_msg)
+                
+            t_end = time.time() + 1.0
+            while time.time() < t_end:
+                speed = -25
+                angle = round(yaw, 1) * 4.0
+                xycar_msg.data = [angle, speed]
+                motor_pub.publish(xycar_msg)
     else:
-        if arData["DX"] < 0:
-            angle = -20
-        elif arData["DX"] > 0:
-            angle = 20
-        else:
-            angle = 0
-    if int(distance) < 70.0:
-        angle = 0
         speed = 0
-	if round(yaw, 1) > 1.0 or round(yaw, 1) < -1.0:
-	    t_end = time.time() + 2.5
-	    while time.time() < t_end:
-	        speed = -30
-	        angle = round(yaw, 1)*(-1.5)
-	        xycar_msg.data = [angle, speed]
-	        motor_pub.publish(xycar_msg)
+    
     xycar_msg.data = [angle, speed]
     motor_pub.publish(xycar_msg)
 

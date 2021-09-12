@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+### 초음파 데이터 거리값 사용 ###
 import rospy, math, copy
 from std_msgs.msg import Int32MultiArray
 def callback(msg):

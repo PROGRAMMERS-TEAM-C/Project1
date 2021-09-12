@@ -1,4 +1,7 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+### artag 거리 정보와 yaw 값 이용한 버전1
 import rospy, math
 import cv2, time, rospy
 import numpy as np
