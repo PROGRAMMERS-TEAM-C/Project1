@@ -3,7 +3,6 @@
 
 import numpy as np
 import cv2, random, math, copy
-from matplotlib import pyplot as plt
 
 Width = 640
 Height = 480

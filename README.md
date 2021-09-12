@@ -9,6 +9,13 @@
 3. 주차 미션
 
 [![주차 미션](http://img.youtube.com/vi/Qs8GvizAjug/0.jpg)](https://www.youtube.com/watch?v=Qs8GvizAjug) 
+
+## Goal
+---
+### 1. 뱀 모양 맵을 벽에 부딪히지 않고 총 3바퀴 주행
+### 2. 동영상에서 차선을 인식해서 핸들 이미지 조작
+### 3. ar태그를 인식하여 주차 공간에 알맞게 주차
+
 ## Environment & Installation
 ---
 - Ubuntu 18.04
@@ -74,6 +81,8 @@ src
 ## Usage
 ---
 ### 1. 맵 주행
+- Map 변경 방법
+  - src/xycar_sim_drive/maps 안에 있는 맵들을 src/xycar_sim_drive/src 폴더에 map.so로 바꿔서 넣고 실행.  
 - 알고리즘 기반 주행1
 ~~~bash
 $ roslaunch xycar_sim_drive xycar_sim_drive_approach1.launch
@@ -85,10 +94,6 @@ $ roslaunch xycar_sim_drive xycar_sim_drive_tryout.launch
 - 알고리즘 기반 주행3(ㄹ_obstacle 맵 주행 가능)
 ~~~ bash
 $ roslaunch xycar_sim_drive xycar_sim_drive_obstacle.launch
-~~~
-- map 바꾸는 방법
-~~~ bash
-$ src/xycar_sim_drive/maps 안에 있는 맵들을 src/xycar_sim_drive/src 폴더에 map.so로 바꿔서 넣고 실행.
 ~~~
 ### 2. 차선 인식
 - track1 주행
@@ -119,12 +124,6 @@ $ roslaunch ar_viewer ar_parking_tryout.launch
 $ roslaunch ar_viewer ar_parking_approach3.launch
 ~~~
 
-## Goal
----
-### 1. 뱀 모양 맵을 벽에 부딪히지 않고 총 3바퀴 주행
-### 2. 동영상에서 차선을 인식해서 핸들 이미지 조작
-### 3. ar태그를 인식하여 주차 공간에 알맞게 주차
-
 ## Procedure & Try
 ---
 ### 1. 맵 주행
@@ -139,21 +138,21 @@ $ roslaunch ar_viewer ar_parking_approach3.launch
 - xycar_sim_drive_obstacle
   - 알고리즘 기반 주행3 - 장애물을 피하기 위해 몇가지 조건을 추가. 초음파 센서의 왼쪽, 오른쪽값을 측정해 (왼쪽 < 240, 오른쪽 > 110 이면 우회전), (왼쪽 < 60, 오른쪽 < 110이면 우회전), (왼쪽 > 110이면 좌회전), 모두 아니면 직진하도록 구현.
 ### 2. 차선 인식
-- 이미지 Calibration
-![Original](./image/1.png)
-![Calibration](./image/2.png)
-  - 카메라로 촬영한 동영상 이미지는 왜곡 현상이 발생할 수 있기 때문에 calitation 과정을 통해서 왜곡 현상 제거
-- ROI 영역을 설정하여 Bird's eye view 형태로 변경
-![Bird's eye view](./image/3.png)
-- HLS 포맷에서 L 채널을 이용해서 흰색 검출 후, 이진화 처리
-- histogram을 사용해서 좌우 차선의 시작 위치를 파악하기
-![histogram](./image/4.png)
+- 이미지 Calibration   
+  <img src="./image/1.png" width="320" height="240"/>
+  <img src="./image/2.png" width="320" height="240"/>
+- ROI 영역을 설정하여 Bird's eye view 형태로 변경  
+  <img src="./image/3.png" width="320" height="240"/>
+- HLS 포맷에서 L 채널을 이용해서 흰색 검출 후, 이진화 처리  
+  <img src="./image/15.png" width="320" height="240"/>
+- histogram을 사용해서 좌우 차선의 시작 위치를 파악하기  
+  <img src="./image/4.png" width="320" height="240"/>
 - sliding window로 좌우 9개씩 쌓아 올리고 중심점(x좌표) 9개로 2차 함수 만들어내기(차선 영역 표시)
-![sliding window1](./image/5.png)
-![sliding window2](./image/6.png)
+  <img src="./image/5.png" width="320" height="240"/>
+  <img src="./image/6.png" width="320" height="240"/>
 - 2차 함수 중 특정 Offset(좌표)의 x 값으로 왼쪽 차선과 오른쪽 차선 정의 후, 핸들 조향
-![final image1](./image/7.png)
-![final image2](./image/8.png)
+  <img src="./image/7.png" width="320" height="240"/>
+  <img src="./image/8.png" width="320" height="240"/>
 ### 3. 주차 미션
 - ar 태그 까지의 거리 정보, 각도, yaw값 확인
   - ar_pose_marker 토픽을 이용해 차량과 ar태그 까지의 거리, 각도, yaw값 계산.
@@ -169,9 +168,15 @@ $ roslaunch ar_viewer ar_parking_approach3.launch
 - 하드 코딩 느낌이라 모든 맵을 수용할 수 있을지 의문. 
 - 실제 차에서 구현할 때는 센서의 딜레이 때문에 알고리즘 수정 필요할 것으로 예상.
 ### 2. 차선 인식
-- 'track 1'은 바닥이 어둡고 차선이 밝아서 차선 인식이 잘되었지만 'track 2'는 바닥에 조명이 반사된 빛 때문에 차선 인식 성능이 좋지 않음.
-- 'track 2' 에서 조명이 일정하지 않아서 영상의 밝기가 고르지 않음.(일정 ROI의 값으로 이진화 임계값을 매번 다르게 조절로 해결)
-- 'track 1'은 좌회전 or 우회전할 때 모든 차선이 보였지만 'track 2'는 좌회전 or 우회전할 때 한 쪽 차선이 보이지 않음
+- 'track 1'은 바닥이 어둡고 차선이 밝아서 차선 인식이 잘되었지만 'track 2'는 바닥에 조명이 반사된 빛 때문에 차선 인식 성능이 좋지 않음.  
+  <img src="./image/9.png" width="320" height="240"/>
+  <img src="./image/10.png" width="320" height="240"/>
+- 'track 2' 에서 조명이 일정하지 않아서 영상의 밝기가 고르지 않음.(일정 ROI의 값으로 이진화 임계값을 매번 다르게 조절해봤지만 좋은 결과는 아니였음)  
+  <img src="./image/11.png" width="320" height="240"/>
+  <img src="./image/12.png" width="320" height="240"/>
+- 'track 1'은 좌회전 or 우회전할 때 모든 차선이 보였지만 'track 2'는 좌회전 or 우회전할 때 한 쪽 차선이 보이지 않음  
+  <img src="./image/13.png" width="320" height="240"/>
+  <img src="./image/14.png" width="320" height="240"/>
 ### 3. 주차 미션
 - yaw 개념이 추가되어 주차구역에 차량의 heading 방향을 완벽하게 맞추는 과정이 어려웠음.
 - arctan로 angle 값을 구하는 과정에서 float devision by zero 에러가 발생하여 분모값인 DY의 초기값으로 1.0으로 설정.
@@ -180,10 +185,10 @@ $ roslaunch ar_viewer ar_parking_approach3.launch
 ---
 ### 1. 맵 주행
 - 최대한 많은 맵에서 주행이 가능한 알고리즘이 좋은 알고리즘이란 생각을 하게됨.
-- 하드코딩식으로 알고리즘을 짜게 되면 한정된 맵에서만 주행이 가능하다는 사실을 알게됨.
+- 하드코딩식으로 알고리즘을 짜게 되면 한정된 맵에서만 주행이 가능하다는 사실을 배움.
 ### 2. 차선 인식
 - 2개의 동영상에 대해 적용해보면서 이미지 처리에서는 카메라를 설치하는 위치와 조명에 큰 영향을 받는다는 것을 배움.
-- Bird's eyes view image로 바꾸면서 원근 변환에 대해서 배움
+- Bird's eyes view image로 바꾸면서 원근 변환에 대해서 배움.
 ### 3. 주차 미션
 - 목표지점까지 갈 수 있는 angle값만 생각하는 것이 아닌 차량의 heading값도 조절하는 방법을 배움.
 - 하드코딩 식이 아닌 좀 더 효율적인 알고리즘을 짜는 법을 배움.
