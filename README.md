@@ -74,14 +74,20 @@ src
 ## Usage
 ---
 ### 1. 맵 주행
-~~~bash
 - 알고리즘 기반 주행1
+~~~bash
 $ roslaunch xycar_sim_drive xycar_sim_drive_approach1.launch
+~~~
 - 알고리즘 기반 주행2
+~~~bash
 $ roslaunch xycar_sim_drive xycar_sim_drive_tryout.launch
+~~~
 - 알고리즘 기반 주행3(ㄹ_obstacle 맵 주행 가능)
+~~~ bash
 $ roslaunch xycar_sim_drive xycar_sim_drive_obstacle.launch
+~~~
 - map 바꾸는 방법
+~~~ bash
 $ src/xycar_sim_drive/maps 안에 있는 맵들을 src/xycar_sim_drive/src 폴더에 map.so로 바꿔서 넣고 실행.
 ~~~
 ### 2. 차선 인식
@@ -96,14 +102,20 @@ $ cd src/line_drive/src
 $ python line_drive2.py
 ~~~
 ### 3. 주차 미션
-~~~bash
 - 알고리즘 기반 artag 거리 정보와 yaw 값 이용한 버전1
+~~~bash
 $ roslaunch ar_viewer ar_parking_approach1.launch
+~~~
 - 알고리즘 기반 artag 거리 정보와 yaw 값 이용한 버전2
+~~~bash
 $ roslaunch ar_viewer ar_parking_approach2.launch
+~~~
 - 알고리즘 기반 artag 거리 정보와 yaw 값 이용한 버전3
+~~~bash
 $ roslaunch ar_viewer ar_parking_tryout.launch
+~~~
 - 알고리즘 기반 DX값과 DY값을 arctan계산하여 angle값 구한 버전
+~~~bash
 $ roslaunch ar_viewer ar_parking_approach3.launch
 ~~~
 
