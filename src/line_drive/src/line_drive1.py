@@ -83,7 +83,7 @@ def warp_process_image(img):
     _, L, _ = cv2.split(cv2.cvtColor(blur, cv2.COLOR_BGR2HLS))
     # 임계값은 현재 이미지의 상태에 따라 낮추거나 올리기
     _, lane = cv2.threshold(L, lane_bin_th, 255, cv2.THRESH_BINARY)
-
+    cv2.imshow('L', L)
     # 히스토그램이란 이미지를 구성하는 픽셀 분포에 대한 그래프
     # (1) x축: 픽셀의 x 좌표값
     # (2) y축: 특정 x 좌표값을 갖는 모든 흰색 픽셀의 개수
