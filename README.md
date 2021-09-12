@@ -4,7 +4,6 @@
 1. 맵 주행
 2. 차선 인식
 3. 주차 미션
-(https://youtu.be/Qs8GvizAjug)https://www.youtube.com/watch?v=Qs8GvizAjug
 [![주차 미션](http://img.youtube.com/vi/Qs8GvizAjug/0.jpg)](https://www.youtube.com/watch?v=Qs8GvizAjug) 
 ## Environment & Installation
 ---
