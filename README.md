@@ -75,9 +75,14 @@ src
 ---
 ### 1. 맵 주행
 ~~~bash
-$ roslaunch xycar_sim_drive_approach1.launch
-$ roslaunch xycar_sim_drive_tryout.launch
-$ roslaunch xycar_sim_drive_tryout_obstacle.launch
+- 알고리즘 기반 주행1
+$ roslaunch xycar_sim_drive xycar_sim_drive_approach1.launch
+- 알고리즘 기반 주행2
+$ roslaunch xycar_sim_drive xycar_sim_drive_tryout.launch
+- 알고리즘 기반 주행3(ㄹ_obstacle 맵 주행 가능)
+$ roslaunch xycar_sim_drive xycar_sim_drive_obstacle.launch
+- map 바꾸는 방법
+$ src/xycar_sim_drive/maps 안에 있는 맵들을 src/xycar_sim_drive/src 폴더에 map.so로 바꿔서 넣고 실행.
 ~~~
 ### 2. 차선 인식
 - track1 주행
@@ -92,10 +97,14 @@ $ python line_drive2.py
 ~~~
 ### 3. 주차 미션
 ~~~bash
-$ roslaunch ar_parking_approach1.launch
-$ roslaunch ar_parking_approach2.launch
-$ roslaunch ar_parking_approach3.launch
-$ roslaunch ar_parking_tryout.launch
+- 알고리즘 기반 artag 거리 정보와 yaw 값 이용한 버전1
+$ roslaunch ar_viewer ar_parking_approach1.launch
+- 알고리즘 기반 artag 거리 정보와 yaw 값 이용한 버전2
+$ roslaunch ar_viewer ar_parking_approach2.launch
+- 알고리즘 기반 artag 거리 정보와 yaw 값 이용한 버전3
+$ roslaunch ar_viewer ar_parking_tryout.launch
+- 알고리즘 기반 DX값과 DY값을 arctan계산하여 angle값 구한 버전
+$ roslaunch ar_viewer ar_parking_approach3.launch
 ~~~
 
 ## Goal
@@ -108,7 +117,7 @@ $ roslaunch ar_parking_tryout.launch
 ---
 ### 1. 맵 주행
 - 초음파 거리 센서 값 측정
-  - 초음파 거리 센서 값을 측정하여 차량이 벽 또는 장애물을 회피하기 위한 적절한 거리값을 알아냄.
+  - 초음파 센서 거리 값을 측정하여 차량이 벽 또는 장애물을 회피하기 위한 적절한 거리값을 알아냄.
 - 회피 주행
   - 위에서 알아낸 거리값을 이용하여 벽 또는 장애물을 회피하는 주행 구현 
 ### 2. 차선 인식
