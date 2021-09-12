@@ -1,4 +1,10 @@
 # 시뮬레이터 Code
+## Video
+---
+1. 맵 주행
+2. 차선 인식
+3. 주차 미션
+https://youtu.be/Qs8GvizAjug
 ## Environment & Installation
 ---
 - Ubuntu 18.04
@@ -23,12 +29,17 @@ $ pip2 install pillow==6.2.2
 ---
 ~~~
 src
-  └─ ar_viewr
+  └─ ar_viewer
   │    └─ launch
   │    │    └─ ar_drive.launch
-  │    │    └─ ar_parking.launch
+  │    │    └─ ar_parking_try1.launch
+  │    │    └─ ar_parking_try2.launch
+  │    │    └─ ar_parking_tryout.launch
   │    └─ src
   │    │    └─ ar_drive.py
+  │    │    └─ ar_parking_try1.py
+  │    │    └─ ar_parking_try2.py
+  │    │    └─ ar_parking_tryout.py
   └─ line_drive
   │    └─ src
   │    │    └─ kmu_track.mkv
@@ -36,10 +47,19 @@ src
   │    │    └─ steer_arrow.png
   └─ xycar_sim_drive
   │    └─ launch
-  │    │    └─ xycar_sim_drive.launch
+  │    │    └─ xycar_sim_drive_try.launch
+  │    │    └─ xycar_sim_drive_tryout.launch
+  │    │    └─ xycar_sim_drive_tryout_obstacle.launch
+  │    └─ maps
+  │    │    └─ ㄹ.so
+  │    │    └─ ㄹ_obstacle.so
+  │    │    └─ ㅁ.so
+  │    │    └─ 凹.so
   │    └─ src
   │    │    └─ main.py
-  │    │    └─ ultra_driver.py
+  │    │    └─ ultra_driver_try.py
+  │    │    └─ ultra_driver_tryout.py
+  │    │    └─ ultra_driver_obstacle.py
   └─ xycar_sim_parking
        └─ src
             └─ main.py
@@ -49,7 +69,7 @@ src
 ---
 ### 1. 맵 주행
 ~~~bash
-$ roslaunch ~ ~
+$ roslaunch xycar_sim_drive_try.launch
 ~~~
 ### 2. 차선 인식
 ~~~bash
@@ -58,7 +78,7 @@ $ python line_drive.py
 ~~~
 ### 3. 주차 미션
 ~~~bash
-$ roslaunch ~ ~
+$ roslaunch ar_parking_try1.launch
 ~~~
 
 ## Goal
